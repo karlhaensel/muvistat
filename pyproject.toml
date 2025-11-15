@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "muvistat"
+version = "0.1.0"
+description = "Get, track, and analyse view, like and comment count of YouTube videos."
+authors = ["Karl Hänsel (Karl-Haensel@gmx.de)"]
+packages = [{ include = "muvistat", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.12.0"
+mypy = "^1.7.0"
+pre-commit = "^3.3.0"
+pytest = "^7.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
