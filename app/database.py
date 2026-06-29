@@ -13,7 +13,7 @@ SQL_CREATE_VIDEOS = """
     CREATE TABLE IF NOT EXISTS videos (
         video_id TEXT PRIMARY KEY,
         title TEXT,
-        added_at TEXT NOT NULL,  -- ISO datetime string
+        added_at TEXT NOT NULL  -- ISO datetime string
         )
 """
 
