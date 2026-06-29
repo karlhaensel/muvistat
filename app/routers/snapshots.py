@@ -26,7 +26,8 @@ def record_snapshot(video_id: str, snapshot: SnapshotCreate):
 
     recorded_at = datetime.now(timezone.utc).isoformat()
     conn.execute(
-        "INSERT INTO snapshots (video_id, views, likes, recorded_at) VALUES (?, ?, ?, ?)",
+        "INSERT INTO snapshots (video_id, views, likes, recorded_at) "
+        "VALUES (?, ?, ?, ?)",
         (video_id, snapshot.views, snapshot.likes, recorded_at),
     )
     conn.commit()
@@ -54,7 +55,8 @@ def get_history(video_id: str):
         )
 
     rows = conn.execute(
-        "SELECT video_id, views, likes, recorded_at FROM snapshots WHERE video_id = ? ORDER BY recorded_at",
+        "SELECT video_id, views, likes, recorded_at FROM snapshots "
+        "WHERE video_id = ? ORDER BY recorded_at",
         (video_id,),
     ).fetchall()
     conn.close()
