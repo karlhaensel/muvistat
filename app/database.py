@@ -2,7 +2,10 @@
 
 import os
 import sqlite3
+from contextlib import asynccontextmanager
 from pathlib import Path
+
+from fastapi import FastAPI
 
 DB_PATH = Path(os.environ.get("DB_PATH", "tracker.db"))
 
@@ -52,3 +55,9 @@ def init_db():
     conn.execute(SQL_CREATE_SNAPSHOTS)
     conn.commit()
     conn.close()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
