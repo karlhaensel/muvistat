@@ -1,4 +1,5 @@
 """Utilities for sqlite database."""
+
 import os
 import sqlite3
 from pathlib import Path
@@ -24,6 +25,7 @@ SQL_CREATE_SNAPSHOTS = """
     )
 """
 
+
 def get_db():
     """Get sqlite database connection."""
 
@@ -36,7 +38,7 @@ def get_db():
 
     try:
         conn = sqlite3.connect(DB_PATH)
-        conn.row_factory = sqlite3.Row  # Access rows by column names instead of indices.
+        conn.row_factory = sqlite3.Row  # Access row by column name instead of index.
         return conn
     except sqlite3.Error as e:
         print(f"Failed to establish connection to SQLite database at {DB_PATH}: {e}")
