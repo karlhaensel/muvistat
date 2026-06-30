@@ -21,7 +21,7 @@ def add_video(video: VideoCreate):
     if existing:
         conn.close()
         raise HTTPException(
-            status_code=409, detail=f"Video with ID {video.video_id} is already tracked"
+            status_code=409, detail=f"Video with ID {video.video_id} already tracked."
         )
 
     added_at = datetime.now(timezone.utc).isoformat()

@@ -21,7 +21,8 @@ def record_snapshot(video_id: str, snapshot: SnapshotCreate):
         conn.close()
         raise HTTPException(
             status_code=404,
-            detail=f"Video with ID {video_id} not found. Please add it first.",
+            detail=f"Video with ID {video_id} not found in videos table of database. "
+            "Please add it first.",
         )
 
     recorded_at = datetime.now(timezone.utc).isoformat()
@@ -52,7 +53,9 @@ def get_history(video_id: str):
     if not video:
         conn.close()
         raise HTTPException(
-            status_code=404, detail=f"Video with ID {video_id} not found."
+            status_code=404,
+            detail=f"No snapshots for video with ID {video_id}."
+            "Add video and/or fetch statistics first.",
         )
 
     rows = conn.execute(
