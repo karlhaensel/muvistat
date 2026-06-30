@@ -22,6 +22,15 @@ Also, I am a classical musician with some music videos on different (not only my
 4. Install dependencies with `pip install -r requirements.txt`
 5. Create an `.env` file in the root directory according to the `.env.example` file and fill in your YouTube API key.
 
+### Setup YouTube API access
+1. Go to https://console.cloud.google.com/ and log in with your Google account.
+2. Create a new project (or select an existing one if it fits the purpose).
+3. In the left sidebar, navigate to "APIs & Services" -> "Library".
+4. Search for "YouTube Data API v3", click on it, and then click "Enable".
+5. In the left sidebar, navigate again to "APIs & Services" -> "Credentials".
+6. Click "Create Credentials" -> "API Key".
+7. Copy the generated API key and paste it into your `.env` file as `YOUTUBE_API_KEY=your_api_key`.
+
 ### Running for development
 1. Run the script with `fastapi dev app/main.py` or run `.\make.bat run_dev` (Windows)
 2. Follow the link in terminal to open the Swagger UI and test the API endpoints.
@@ -37,7 +46,10 @@ You can also use `.\make.bat build_docker` and `.\make.bat run_docker` to build 
 - [x] basic database setup with SQLite
 - [x] pydantic models for API
 - [x] fastAPI endpoints for adding videos and snapshots of their statistics (automatic documentation with Swagger UI)
-- [ ] fetching statistics from YouTube API
+- [x] fetching statistics from YouTube API
+- [ ] abstract CRUD operations in database.py, called in routers
+- [ ] add more logging to existing code
+- [ ] option to fetch video title from YouTube API
 - [ ] client for API including basic statistics
 - [ ] "alerts" for videos that have a significant change in statistics
 - [ ] ...
