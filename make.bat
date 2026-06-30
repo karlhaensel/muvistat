@@ -4,6 +4,7 @@ if "%1"=="pre" goto pre_commit
 if "%1"=="run_dev" goto run_dev
 if "%1"=="build_docker" goto build_docker
 if "%1"=="run_docker" goto run_docker
+if "%1"=="stop_docker" goto stop_docker
 
 echo Unknown command: %1
 goto end
@@ -34,6 +35,13 @@ if %errorlevel%==0 (
 docker run -d -p 8000:8000 --name muvistat muvistat
 echo Docker container is running. Access the app at http://localhost:8000
 echo See http://localhost:8000/docs/ for API documentation.
+goto end
+
+:stop_docker
+:: remove and stop docker container (ignoring errors) to clean up at the end
+docker stop muvistat >nul 2>&1
+docker rm muvistat >nul 2>&1
+echo Docker container stopped and removed.
 goto end
 
 :end
