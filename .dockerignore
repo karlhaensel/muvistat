@@ -1,0 +1,14 @@
+# git
+.git/
+.gitignore
+
+# venv/env
+.venv
+.env
+
+# PyCharm
+.idea/
+
+# data
+data/
+*.db
