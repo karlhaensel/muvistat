@@ -9,7 +9,7 @@ from app.routers.snapshots import router as snapshots_router
 
 app = FastAPI(
     title="muvistat",
-    description="Track view and like counts for YouTube videos over time.",
+    description="Track view, like, and comment counts for YouTube videos over time.",
     version="1.0.0",
     lifespan=lifespan,
 )
