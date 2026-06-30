@@ -5,8 +5,10 @@ import sqlite3
 from contextlib import asynccontextmanager
 from pathlib import Path
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 
+load_dotenv()
 DB_PATH = Path(os.environ.get("DB_PATH", "tracker.db"))
 
 SQL_CREATE_VIDEOS = """
@@ -23,6 +25,7 @@ SQL_CREATE_SNAPSHOTS = """
         video_id TEXT NOT NULL,
         views INTEGER NOT NULL,
         likes INTEGER NOT NULL,
+        comments INTEGER NOT NULL,
         recorded_at TEXT NOT NULL,  -- ISO datetime string
         FOREIGN KEY (video_id) REFERENCES videos(video_id)
     )

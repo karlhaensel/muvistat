@@ -39,6 +39,10 @@ Likes = Annotated[
     int, Field(ge=0, description="Like count of the given YouTube video.")
 ]
 
+Comments = Annotated[
+    int, Field(ge=0, description="Comment count of the given YouTube video.")
+]
+
 ISODatetimeStr = Annotated[str, BeforeValidator(validate_iso_format)]
 
 
@@ -62,6 +66,7 @@ class SnapshotCreate(BaseModel):
 
     views: Views
     likes: Likes
+    comments: Comments
 
 
 class SnapshotResponse(BaseModel):
@@ -70,4 +75,5 @@ class SnapshotResponse(BaseModel):
     video_id: YouTubeID
     views: Views
     likes: Likes
+    comments: Comments
     recorded_at: ISODatetimeStr
