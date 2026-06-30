@@ -32,7 +32,8 @@ if %errorlevel%==0 (
     docker rm muvistat
     )
 :: run docker detached (free terminal) and map external to internal port 8000
-docker run -d -p 8000:8000 --name muvistat muvistat
+:: while using .env for secrets and making data output (db) available locally
+docker run -d -p 8000:8000 --env-file .env -v "%cd%/data:/code/data" --name muvistat muvistat
 echo Docker container is running. Access the app at http://localhost:8000
 echo See http://localhost:8000/docs/ for API documentation.
 goto end
