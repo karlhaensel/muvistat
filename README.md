@@ -47,9 +47,9 @@ You can also use `.\make.bat build_docker` and `.\make.bat run_docker` to build 
 - [x] pydantic models for API
 - [x] fastAPI endpoints for adding videos and snapshots of their statistics (automatic documentation with Swagger UI)
 - [x] fetching statistics from YouTube API
-- [ ] abstract CRUD operations in database.py, called in routers
+- [x] abstract CRUD operations called in routers
 - [ ] add more logging to existing code
-- [ ] option to fetch video title from YouTube API
+- [ ] option to fetch video title and channel information from YouTube API as well as adding an optional comment
 - [ ] client for API including basic statistics
 - [ ] "alerts" for videos that have a significant change in statistics
 - [ ] ...
