@@ -95,6 +95,7 @@ def record_live_snapshot(video_id: str):
         video_id=video_id,
         views=views,
         likes=likes,
+        dislikes=dislikes,
         comments=comments,
         recorded_at=recorded_at,
     )
@@ -132,6 +133,7 @@ def record_manual_snapshot(video_id: str, snapshot: SnapshotCreate):
         video_id=video_id,
         views=snapshot.views,
         likes=snapshot.likes,
+        dislikes=snapshot.dislikes,
         comments=snapshot.comments,
         recorded_at=recorded_at,
     )
