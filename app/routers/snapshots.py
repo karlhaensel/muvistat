@@ -80,10 +80,11 @@ def record_live_snapshot(video_id: str):
     stats = items[0]["statistics"]
     views = int(stats.get("viewCount", 0))
     likes = int(stats.get("likeCount", 0))
+    dislikes = int(stats.get("dislikeCount", 0))
     comments = int(stats.get("commentCount", 0))
     recorded_at = datetime.now(timezone.utc).isoformat()
 
-    create_snapshot(video_id, views, likes, comments, recorded_at)
+    create_snapshot(video_id, views, likes, dislikes, comments, recorded_at)
 
     logger.debug(
         f"Successfully recorded statistics snapshot for video with ID {video_id} "
@@ -114,7 +115,12 @@ def record_manual_snapshot(video_id: str, snapshot: SnapshotCreate):
     recorded_at = datetime.now(timezone.utc).isoformat()
 
     create_snapshot(
-        video_id, snapshot.views, snapshot.likes, snapshot.comments, recorded_at
+        video_id,
+        snapshot.views,
+        snapshot.likes,
+        snapshot.dislikes,
+        snapshot.comments,
+        recorded_at,
     )
 
     logger.debug(

@@ -39,6 +39,10 @@ Likes = Annotated[
     int, Field(ge=0, description="Like count of the given YouTube video.")
 ]
 
+Dislikes = Annotated[
+    int, Field(ge=0, description="Dislike count of the given YouTube video.")
+]
+
 Comments = Annotated[
     int, Field(ge=0, description="Comment count of the given YouTube video.")
 ]
@@ -66,6 +70,7 @@ class SnapshotCreate(BaseModel):
 
     views: Views
     likes: Likes
+    dislikes: Dislikes
     comments: Comments
 
 
@@ -75,5 +80,6 @@ class SnapshotResponse(BaseModel):
     video_id: YouTubeID
     views: Views
     likes: Likes
+    dislikes: Dislikes
     comments: Comments
     recorded_at: ISODatetimeStr

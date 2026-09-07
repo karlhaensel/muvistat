@@ -26,6 +26,7 @@ SQL_CREATE_SNAPSHOTS = """
         video_id TEXT NOT NULL,
         views INTEGER NOT NULL,
         likes INTEGER NOT NULL,
+        dislikes INTEGER NOT NULL,
         comments INTEGER NOT NULL,
         recorded_at TEXT NOT NULL,  -- ISO datetime string
         FOREIGN KEY (video_id) REFERENCES videos(video_id)
