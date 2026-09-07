@@ -48,8 +48,9 @@ You can also use `.\make.bat build_docker` and `.\make.bat run_docker` to build 
 - [x] fastAPI endpoints for adding videos and snapshots of their statistics (automatic documentation with Swagger UI)
 - [x] fetching statistics from YouTube API
 - [x] abstract CRUD operations called in routers
-- [ ] add more logging to existing code
-- [ ] option to fetch video title and channel information from YouTube API as well as adding an optional comment
-- [ ] client for API including basic statistics
+- [x] add more logging to existing code
+- [x] option to fetch video title, channel title, and duration from YouTube API as well as adding an optional comment
+- [ ] go object-oriented
+- [ ] dashboard app for visualising statistics and adding new videos
 - [ ] "alerts" for videos that have a significant change in statistics
-- [ ] ...
+- [ ] deploy app and log video statistics for some months

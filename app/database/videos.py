@@ -51,8 +51,24 @@ def create_video(video: VideoCreate, added_at: str) -> None:
     """
     conn = get_db()
     conn.execute(
-        "INSERT INTO videos (video_id, title, added_at) VALUES (?, ?, ?)",
-        (video.video_id, video.title, added_at),
+        "INSERT INTO videos (video_id, added_at) VALUES (?, ?)",
+        (video.video_id, added_at),
     )
     conn.commit()
     conn.close()
+
+
+def read_added_at(video_id: str) -> str | None:
+    """
+    Read the added_at timestamp for a given video_id from the database.
+
+    :param video_id: YouTube video ID for which to retrieve the added_at timestamp.
+    :return: ISO formatted datetime string for when the video was added, or None if not found.
+    """
+    conn = get_db()
+    result = conn.execute(
+        "SELECT added_at FROM videos WHERE video_id = ?", (video_id,)
+    ).fetchone()
+    conn.close()
+
+    return result[0] if result else None

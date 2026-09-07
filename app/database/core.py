@@ -15,9 +15,23 @@ DB_PATH = Path(os.environ.get("DB_PATH", "tracker.db"))
 SQL_CREATE_VIDEOS = """
     CREATE TABLE IF NOT EXISTS videos (
         video_id TEXT PRIMARY KEY,
-        title TEXT,
+        duration TEXT,
+        my_comment TEXT,
         added_at TEXT NOT NULL  -- ISO datetime string
         )
+"""
+
+SQL_CREATE_METADATA = """
+    CREATE TABLE IF NOT EXISTS metadata (
+        video_id TEXT PRIMARY KEY,
+        duration TEXT NOT NULL,  -- ISO 8601 duration string
+        title TEXT NOT NULL,
+        channel TEXT NOT NULL,
+        published_at TEXT NOT NULL,  -- ISO datetime string
+        my_comment TEXT,  -- nullable
+        updated_at TEXT PRIMARY KEY,  -- ISO datetime string
+        FOREIGN KEY (video_id) REFERENCES videos(video_id)
+    )
 """
 
 SQL_CREATE_SNAPSHOTS = """
@@ -69,6 +83,7 @@ def init_db():
     logger.debug(f"Attempting to initialise SQLite database at {DB_PATH}")
     conn = get_db()
     conn.execute(SQL_CREATE_VIDEOS)
+    conn.execute(SQL_CREATE_METADATA)
     conn.execute(SQL_CREATE_SNAPSHOTS)
     conn.commit()
     logger.debug(f"Successfully initialised SQLite database at {DB_PATH}")
