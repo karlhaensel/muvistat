@@ -4,7 +4,7 @@ import logging
 
 from fastapi import FastAPI
 
-from app.database import lifespan
+from app.database.core import lifespan
 from app.routers.videos import router as videos_router
 from app.routers.snapshots import router as snapshots_router
 

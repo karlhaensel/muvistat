@@ -35,7 +35,7 @@ SQL_CREATE_SNAPSHOTS = """
 def get_db():
     """Get sqlite database connection."""
 
-    if DB_PATH.parent != Path("."):
+    if DB_PATH.parent != Path(".."):
         try:
             DB_PATH.parent.mkdir(parents=True, exist_ok=True)
         except OSError as e:

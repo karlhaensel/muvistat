@@ -3,8 +3,8 @@
 from fastapi import APIRouter, HTTPException
 from datetime import datetime, timezone
 
+from app.database.core import get_db
 from app.models import VideoCreate, VideoResponse
-from app.database import get_db
 
 
 router = APIRouter(prefix="/videos", tags=["Videos"])

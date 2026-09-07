@@ -7,8 +7,8 @@ import httpx
 from fastapi import APIRouter, HTTPException
 from datetime import datetime, timezone
 
+from app.database.core import get_db
 from app.models import SnapshotCreate, SnapshotResponse
-from app.database import get_db
 
 
 ERROR_MSG_VIDEO_NOT_FOUND = "Video with ID {video_id} not found in videos table of database. Please add it first."
