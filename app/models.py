@@ -1,7 +1,7 @@
 """Pydantic data models for API."""
 
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, Self
 
 from pydantic import BaseModel, Field, BeforeValidator
 
@@ -83,3 +83,35 @@ class SnapshotResponse(BaseModel):
     dislikes: Dislikes
     comments: Comments
     recorded_at: ISODatetimeStr
+
+    @classmethod
+    def from_youtube_api_response_items(
+        cls, video_id: str, items: list[dict], recorded_at: str
+    ) -> Self:
+        """
+        Create a SnapshotResponse instance from YouTube API response items.
+
+        :param video_id: YouTube video ID for which the snapshot is recorded.
+        :param items: List of items from YouTube API response.
+        :param recorded_at: ISO 8601 formatted datetime string for when
+            the snapshot was recorded.
+        :return: SnapshotResponse instance with extracted statistics.
+        """
+
+        if not items:
+            raise ValueError("YouTube API response items list is empty.")
+
+        stats = items[0].get("statistics", {})
+        views = int(stats.get("viewCount", 0))
+        likes = int(stats.get("likeCount", 0))
+        dislikes = int(stats.get("dislikeCount", 0))
+        comments = int(stats.get("commentCount", 0))
+
+        return cls(
+            video_id=video_id,
+            views=views,
+            likes=likes,
+            dislikes=dislikes,
+            comments=comments,
+            recorded_at=recorded_at,
+        )
