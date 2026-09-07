@@ -24,13 +24,22 @@ router = APIRouter(prefix="/videos", tags=["Statistics snapshots"])
 )
 def record_live_snapshot(video_id: str):
     """Fetch live statistics snapshot for given video from YouTube API and record it."""
+    logger.debug(f"Attempting to record live snapshot for video with ID {video_id}.")
     api_key = os.environ.get("YOUTUBE_API_KEY", "")
     if not api_key:
-        raise HTTPException(
-            status_code=500, detail="YOUTUBE_API_KEY environment variable not set"
-        )
+        error_msg = "YOUTUBE_API_KEY environment variable not set. Please set it first."
+        logger.error(error_msg)
+        raise HTTPException(status_code=500, detail=error_msg)
+    logger.debug("Successfully retrieved YOUTUBE_API_KEY from environment variables.")
 
-    check_video_exists(video_id, raise_for="not_found")
+    try:
+        check_video_exists(video_id, raise_for="not_found")
+    except HTTPException:
+        logger.error(ERROR_MSG_VIDEO_NOT_FOUND.format(video_id))
+        raise
+    logger.debug(
+        f"Video with ID {video_id} exists in database. Proceeding to fetch stats."
+    )
 
     url = "https://www.googleapis.com/youtube/v3/videos"
     params = {
@@ -66,6 +75,8 @@ def record_live_snapshot(video_id: str):
             status_code=404, detail=f"Video with ID {video_id} not found on YouTube."
         )
 
+    logger.debug(f"Successfully fetched live stats for video with ID {video_id}.")
+
     stats = items[0]["statistics"]
     views = int(stats.get("viewCount", 0))
     likes = int(stats.get("likeCount", 0))
@@ -73,6 +84,11 @@ def record_live_snapshot(video_id: str):
     recorded_at = datetime.now(timezone.utc).isoformat()
 
     create_snapshot(video_id, views, likes, comments, recorded_at)
+
+    logger.debug(
+        f"Successfully recorded statistics snapshot for video with ID {video_id} "
+        "in database."
+    )
 
     return SnapshotResponse(
         video_id=video_id,
@@ -88,12 +104,22 @@ def record_live_snapshot(video_id: str):
 )
 def record_manual_snapshot(video_id: str, snapshot: SnapshotCreate):
     """Record video statistics snapshot manually (for dev, testing, backfills...)"""
-    check_video_exists(video_id, raise_for="not_found")
+    logger.debug(f"Attempting to record manual snapshot for video with ID {video_id}.")
+    try:
+        check_video_exists(video_id, raise_for="not_found")
+    except HTTPException:
+        logger.error(ERROR_MSG_VIDEO_NOT_FOUND.format(video_id))
+        raise
 
     recorded_at = datetime.now(timezone.utc).isoformat()
 
     create_snapshot(
         video_id, snapshot.views, snapshot.likes, snapshot.comments, recorded_at
+    )
+
+    logger.debug(
+        f"Successfully recorded manual statistics snapshot for video with ID {video_id} "
+        "in database."
     )
 
     return SnapshotResponse(
@@ -108,8 +134,21 @@ def record_manual_snapshot(video_id: str, snapshot: SnapshotCreate):
 @router.get("/{video_id}/history", response_model=list[SnapshotResponse])
 def get_history(video_id: str):
     """Get history of video statistics snapshots."""
-    check_video_exists(video_id, raise_for="not_found")
+    logger.debug(
+        f"Attempting to fetch statistics history for video with ID {video_id}."
+    )
+
+    try:
+        check_video_exists(video_id, raise_for="not_found")
+    except HTTPException:
+        logger.error(ERROR_MSG_VIDEO_NOT_FOUND.format(video_id))
+        raise
 
     rows = read_all_snapshots(video_id)
+
+    logger.debug(
+        f"Successfully fetched history for video with ID {video_id}. "
+        f"Found {len(rows)} snapshots."
+    )
 
     return [SnapshotResponse(**dict(row)) for row in rows]

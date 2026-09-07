@@ -1,5 +1,6 @@
 """Utilities for sqlite database."""
 
+import logging
 import os
 import sqlite3
 from contextlib import asynccontextmanager
@@ -31,36 +32,50 @@ SQL_CREATE_SNAPSHOTS = """
     )
 """
 
+logger = logging.getLogger("api.database.core")
+
 
 def get_db():
     """Get sqlite database connection."""
 
+    logger.debug(f"Attempting to establish connection to SQLite database at {DB_PATH}")
     if DB_PATH.parent != Path(".."):
         try:
             DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+            logger.debug(
+                f"Successfully created directory structure for DB path: {DB_PATH}"
+            )
         except OSError as e:
-            print(f"Failed to create directory structure for {DB_PATH}: {e}")
+            logger.error(f"Failed to create directory structure for {DB_PATH}: {e}")
             raise
 
     try:
         conn = sqlite3.connect(DB_PATH)
         conn.row_factory = sqlite3.Row  # Access row by column name instead of index.
+        logger.debug(
+            f"Successfully established connection to SQLite database at {DB_PATH}"
+        )
         return conn
     except sqlite3.Error as e:
-        print(f"Failed to establish connection to SQLite database at {DB_PATH}: {e}")
+        logger.error(
+            f"Failed to establish connection to SQLite database at {DB_PATH}: {e}"
+        )
         raise
 
 
 def init_db():
     """Initialise sqlite database."""
+    logger.debug(f"Attempting to initialise SQLite database at {DB_PATH}")
     conn = get_db()
     conn.execute(SQL_CREATE_VIDEOS)
     conn.execute(SQL_CREATE_SNAPSHOTS)
     conn.commit()
+    logger.debug(f"Successfully initialised SQLite database at {DB_PATH}")
     conn.close()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    logger.debug("Application is starting up.")
     init_db()
     yield
